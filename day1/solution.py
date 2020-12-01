@@ -6,11 +6,11 @@ GOAL_NUM = 2020
 
 
 def get_input(filename: str) -> List[int]:
-  """Returns contents of filename as list of ints"""
-  with open(filename,'r') as fh:
-    lines = fh.readlines()
+    """Returns contents of filename as list of ints"""
+    with open(filename,'r') as fh:
+        lines = fh.readlines()
 
-  return [int(x.strip()) for x in lines]
+    return [int(x.strip()) for x in lines]
 
 
 def sum(nums: List[int]) -> int:
@@ -45,12 +45,12 @@ def find_nums_2020(
 
 
 def products_from_2020(filename: str) -> int:
-  """Returns products of first 2 nums and 3 nums in filename that sum to 2020"""
-  numbers = get_input(filename)
-  factors2 = find_nums_2020(numbers, 2)
-  factors3 = find_nums_2020(numbers, 3)
+    """Returns products of first 2 nums and 3 nums in filename that sum to 2020"""
+    numbers = get_input(filename)
+    factors2 = find_nums_2020(numbers, 2)
+    factors3 = find_nums_2020(numbers, 3)
 
-  return product(factors2), product(factors3)
+    return product(factors2), product(factors3)
 
 
 products = products_from_2020("./input.txt")
