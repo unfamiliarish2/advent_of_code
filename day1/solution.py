@@ -44,14 +44,15 @@ def find_nums_2020(
             return result     
 
 
-def product_from_2020(filename: str, count: int) -> int:
+def products_from_2020(filename: str) -> int:
   """Returns products of first 2 nums and 3 nums in filename that sum to 2020"""
   numbers = get_input(filename)
+  factors2 = find_nums_2020(numbers, 2)
+  factors3 = find_nums_2020(numbers, 3)
 
-  return find_nums_2020(numbers, count)
+  return product(factors2), product(factors3)
 
 
-output = product_from_2020("./input.txt", 2)
-output2 = product_from_2020("./input.txt", 3)
-print(output, output2)
-
+products = products_from_2020("./input.txt")
+print(f"2 numbers product: {products[0]}")
+print(f"3 numbers product: {products[1]}")
