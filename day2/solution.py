@@ -4,31 +4,31 @@ from typing import Callable, List
 
 class PasswordInfo:
     def __init__(self, pass_info: str) -> None:
-    	# splits on '-', ' ', and ': '
-    	low, high, char, password = re.split('-| |: ', pass_info.strip())
-    	self.low = int(low)
-    	self.high = int(high)
-    	self.required_char = char
-    	self.password = password
+        # splits on '-', ' ', and ': '
+        low, high, char, password = re.split('-| |: ', pass_info.strip())
+        self.low = int(low)
+        self.high = int(high)
+        self.required_char = char
+        self.password = password
 
     def has_valid_count(self) -> bool:
-    	char_count = self.password.count(self.required_char)
-    	valid_low = self.low <= char_count
-    	valid_high = char_count <= self.high
+        char_count = self.password.count(self.required_char)
+        valid_low = self.low <= char_count
+        valid_high = char_count <= self.high
     
-    	return valid_low and valid_high
+        return valid_low and valid_high
 
     def has_valid_position(self) -> bool:
-    	required_char = self.required_char
-    	in_low = self.password[self.low] == required_char
-    	in_high = self.password[self.high] == required_char
+        rchar = self.required_char
+        in_low = self.password[self.low-1] == rchar
+        in_high = self.password[self.high-1] == rchar
 
-    	return in_low or in_high
+        return in_low != in_high
 
     def __repr__(self) -> str:
-    	return f'PasswordInfo(password={self.password}, ' \
-    		f'char={self.required_char}, ' \
-    		f'low={self.low}, high={self.high})'
+        return f'PasswordInfo(password={self.password}, ' \
+            f'char={self.required_char}, ' \
+            f'low={self.low}, high={self.high})'
 
 
 def get_input(filename: str) -> List[PasswordInfo]:
@@ -40,16 +40,19 @@ def get_input(filename: str) -> List[PasswordInfo]:
 
 
 def password_validator(filename: str) -> int:
-	pass_infos = get_input(filename)
+    pass_infos = get_input(filename)
 
-	count = 0
-	for pinfo in pass_infos:
-		if pinfo.has_valid_count():
-			count += 1
+    num_valid_count = 0
+    num_valid_position = 0
+    for pinfo in pass_infos:
+        if pinfo.has_valid_count():
+            num_valid_count += 1
+        if pinfo.has_valid_position():
+            num_valid_position += 1
 
-	return count
+    return num_valid_count, num_valid_position
 
 
-valid_passwords = password_validator("./input.txt")
-print(valid_passwords)
-
+num_valid_count, num_valid_position = password_validator("./input.txt")
+print(f"Passwords with valid count: {num_valid_count}")
+print(f"Passwords with valid position: {num_valid_count}")
