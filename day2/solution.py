@@ -1,11 +1,11 @@
-from functools import reduce
 import re
-from typing import Callable, List, Tuple
+from typing import List, Tuple
+
 
 class PasswordInfo:
     def __init__(self, pass_info: str) -> None:
         # splits on '-', ' ', and ': '
-        low, high, char, password = re.split('-| |: ', pass_info.strip())
+        low, high, char, password = re.split("-| |: ", pass_info.strip())
         self.low = int(low)
         self.high = int(high)
         self.required_char = char
@@ -15,31 +15,33 @@ class PasswordInfo:
         char_count = self.password.count(self.required_char)
         valid_low = self.low <= char_count
         valid_high = char_count <= self.high
-    
+
         return valid_low and valid_high
 
     def has_valid_position(self) -> bool:
         rchar = self.required_char
-        in_low = self.password[self.low-1] == rchar
-        in_high = self.password[self.high-1] == rchar
+        in_low = self.password[self.low - 1] == rchar
+        in_high = self.password[self.high - 1] == rchar
 
         return in_low != in_high
 
     def __repr__(self) -> str:
-        return f'PasswordInfo(password={self.password}, ' \
-            f'char={self.required_char}, ' \
-            f'low={self.low}, high={self.high})'
+        return (
+            f"PasswordInfo(password={self.password}, "
+            f"char={self.required_char}, "
+            f"low={self.low}, high={self.high})"
+        )
 
 
 def get_input(filename: str) -> List[PasswordInfo]:
     """Returns contents of filename as list of ints"""
-    with open(filename,'r') as fh:
+    with open(filename, "r") as fh:
         lines = fh.readlines()
 
     return [PasswordInfo(x) for x in lines]
 
 
-def password_validator(filename: str) -> Tuple[int,...]:
+def password_validator(filename: str) -> Tuple[int, ...]:
     pass_infos = get_input(filename)
 
     num_valid_count = 0
