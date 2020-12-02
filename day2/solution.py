@@ -1,25 +1,34 @@
-from dataclasses import dataclass
+from functools import reduce
 import re
+from typing import Callable, List
 
-@dataclass
 class PasswordInfo:
-    password: str
-    required_char: str
-    min_count: int
-    max_count: int
-
     def __init__(self, pass_info: str) -> None:
     	# splits on '-', ' ', and ': '
-    	min_, max_, char, pass_ = re.split('-| |: ', line.strip())
-    	self.min_count = min_
-    	self.max_count = max_
+    	low, high, char, password = re.split('-| |: ', pass_info.strip())
+    	self.low = int(low)
+    	self.high = int(high)
     	self.required_char = char
-    	self.password = pass_
+    	self.password = password
 
-
-    def is_valid(self) -> bool:
+    def has_valid_count(self) -> bool:
     	char_count = self.password.count(self.required_char)
-    	return min_count <= char_count and char_count <= max_count
+    	valid_low = self.low <= char_count
+    	valid_high = char_count <= self.high
+    
+    	return valid_low and valid_high
+
+    def has_valid_position(self) -> bool:
+    	required_char = self.required_char
+    	in_low = self.password[self.low] == required_char
+    	in_high = self.password[self.high] == required_char
+
+    	return in_low or in_high
+
+    def __repr__(self) -> str:
+    	return f'PasswordInfo(password={self.password}, ' \
+    		f'char={self.required_char}, ' \
+    		f'low={self.low}, high={self.high})'
 
 
 def get_input(filename: str) -> List[PasswordInfo]:
@@ -27,6 +36,20 @@ def get_input(filename: str) -> List[PasswordInfo]:
     with open(filename,'r') as fh:
         lines = fh.readlines()
 
+    return [PasswordInfo(x) for x in lines]
 
 
-    return [int(x.strip()) for x in lines]
+def password_validator(filename: str) -> int:
+	pass_infos = get_input(filename)
+
+	count = 0
+	for pinfo in pass_infos:
+		if pinfo.has_valid_count():
+			count += 1
+
+	return count
+
+
+valid_passwords = password_validator("./input.txt")
+print(valid_passwords)
+
