@@ -1,6 +1,6 @@
 from functools import reduce
 import re
-from typing import Callable, List
+from typing import Callable, List, Tuple
 
 class PasswordInfo:
     def __init__(self, pass_info: str) -> None:
@@ -39,7 +39,7 @@ def get_input(filename: str) -> List[PasswordInfo]:
     return [PasswordInfo(x) for x in lines]
 
 
-def password_validator(filename: str) -> int:
+def password_validator(filename: str) -> Tuple[int,...]:
     pass_infos = get_input(filename)
 
     num_valid_count = 0
@@ -53,6 +53,6 @@ def password_validator(filename: str) -> int:
     return num_valid_count, num_valid_position
 
 
-num_valid_count, num_valid_position = password_validator("./input.txt")
-print(f"Passwords with valid count: {num_valid_count}")
-print(f"Passwords with valid position: {num_valid_count}")
+count, position = password_validator("./input.txt")
+print(f"Passwords with valid count: {count}")
+print(f"Passwords with valid position: {position}")
