@@ -42,6 +42,7 @@ def get_input(filename: str) -> List[PasswordInfo]:
 
 
 def password_validator(filename: str) -> Tuple[int, ...]:
+    """Returns count of valid passwords, according to diff requirements"""
     pass_infos = get_input(filename)
 
     num_valid_count = 0
